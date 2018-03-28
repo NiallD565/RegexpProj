@@ -72,10 +72,59 @@ func poregtonfa(postfix string) *nfa {
 			nfastack = append(nfastack, &nfa{initial: &initial, accept: &accept})
 		}
 	}
+	if len(nfastack) != 1 {
+		fmt.Println("Nani:", len(nfastack), nfastack)
+	}
+
 	return nfastack[0] // nfa return value
+}
+
+// get the current array
+// add s to it and check if it is a possible initial state
+func addstate(l []*state, s *state, a *state) []*state {
+	l = append(l, s)
+
+	// if the state has a E arrow to it, it is assigned the value of 0
+	if s != a && s.symbol == 0 {
+		l = addstate(l, s.edge1, a)
+		if s.edge2 != nil {
+			l = addstate(l, s.edge2, a)
+		}
+	}
+	return l
+}
+
+func postmatch(po string, s string) bool {
+	ismatch := false
+	postnfa := poregtonfa(po)
+
+	current := []*state{}
+	next := []*state{}
+
+	// list containing all the possible initial states
+	current = addstate(current[:], postnfa.initial, postnfa.accept)
+
+	for _, r := range s {
+		for _, c := range current {
+			if c.symbol == r {
+				next = addstate(next[:], c.edge1, postnfa.accept)
+			}
+		}
+		current, next = next, []*state{}
+	}
+	for _, c := range current {
+		if c == postnfa.accept {
+			ismatch = true
+			break
+		}
+	}
+
+	return ismatch
 }
 
 func main() {
 	nfa := poregtonfa("ab.c*|") // test case representing a regular expression
 	fmt.Println(nfa)            // print out the return value (memory address)
+
+	fmt.Println(postmatch("ab.c|", "cccc"))
 }
