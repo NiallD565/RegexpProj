@@ -87,6 +87,7 @@ func addstate(l []*state, s *state, a *state) []*state {
 	// if the state has a E arrow to it, it is assigned the value of 0
 	if s != a && s.symbol == 0 {
 		l = addstate(l, s.edge1, a)
+		// check for a second edge
 		if s.edge2 != nil {
 			l = addstate(l, s.edge2, a)
 		}
@@ -106,7 +107,10 @@ func postmatch(po string, s string) bool {
 
 	for _, r := range s {
 		for _, c := range current {
+			// loop through the current states naming them c
+			// check the state if the name is set to r
 			if c.symbol == r {
+				// r has a single arrow going from it to another another state
 				next = addstate(next[:], c.edge1, postnfa.accept)
 			}
 		}
@@ -126,5 +130,5 @@ func main() {
 	nfa := poregtonfa("ab.c*|") // test case representing a regular expression
 	fmt.Println(nfa)            // print out the return value (memory address)
 
-	fmt.Println(postmatch("ab.c|", "cccc"))
+	fmt.Println(postmatch("ab.c*|", "cccc"))
 }
