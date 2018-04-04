@@ -95,6 +95,40 @@ func addstate(l []*state, s *state, a *state) []*state {
 	return l
 }
 
+/*
+func intopost(infix string) string {
+	specials := map[rune]int{'*': 10, '.': 9, '|': 8}
+
+	postfix := []rune{}
+	s := []rune{}
+
+	for _, r := range infix {
+		switch {
+		case r == '(':
+			s = append(s, r)
+		case r == ')':
+			for s[len(s)-1] != '(' {
+				postfix = append(postfix, s[len(s)-1])
+				s = s[:len(s)-1]
+			}
+			s = s[:len(s)-1]
+		case specials[r] > 0:
+			for len(s) > 0 && specials[r] <= specials[s[len(s)-1]] {
+				postfix = append(postfix, s[len(s)-1])
+				s = s[:len(s)-1]
+			}
+			s = append(s, r)
+		default:
+			postfix = append(postfix, r)
+		}
+	}
+	for len(s) > 0 {
+		postfix, s = append(postfix, s[len(s)-1]), s[:len(s)-1]
+	}
+
+	return string(postfix)
+}*/
+
 func postmatch(po string, s string) bool {
 	ismatch := false
 	postnfa := poregtonfa(po)
