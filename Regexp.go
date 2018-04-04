@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// test github desktop
 // pointers to other states
 type state struct {
 	symbol rune // rune gives the integer value of a character
