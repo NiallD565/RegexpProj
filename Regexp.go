@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// test github desktop
 type state struct {
 	symbol rune
 	edge1  *state
