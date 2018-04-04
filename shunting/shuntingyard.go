@@ -1,4 +1,4 @@
-package main
+package shunting
 
 func intopost(infix string) string {
 	specials := map[rune]int{'*': 10, '.': 9, '|': 8}
