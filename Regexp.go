@@ -43,7 +43,6 @@ func UserInput() string {
 func intopost(infix string) string {
 	specials := map[rune]int{'*': 10, '.': 9, '|': 8}
 	// * 0 or more
-	// + 1 or more
 	// . concatenate
 	// | or
 
@@ -52,7 +51,7 @@ func intopost(infix string) string {
 
 	// ( added to stack
 	// ) add each character stack to the postfix while the opening tag not found get rid of the bracket
-	for _, r := range infix { // convert string array to runes
+	for _, r := range infix { // convert string to an array runes
 		switch {
 		case r == '(':
 			s = append(s, r)
@@ -62,7 +61,7 @@ func intopost(infix string) string {
 				s = s[:len(s)-1] // get everything but the last element in the list
 			}
 			s = s[:len(s)-1]
-		case specials[r] > 0:
+		case specials[r] > 0: // if its not in the map it equal to null or 0
 			for len(s) > 0 && specials[r] <= specials[s[len(s)-1]] {
 				postfix = append(postfix, s[len(s)-1])
 				s = s[:len(s)-1]
@@ -75,7 +74,7 @@ func intopost(infix string) string {
 	for len(s) > 0 { // if any characters are left append them to the string and clear the stack
 		postfix, s = append(postfix, s[len(s)-1]), s[:len(s)-1] // get everything but the last element in the list
 	}
-
+	//fmt.Println(string(postfix)) // check has it been converted to postfix
 	return string(postfix)
 }
 
@@ -205,6 +204,6 @@ func main() {
 	//nfa := poregtonfa(input) // test case representing a regular expression
 	fmt.Println(nfa) // print out the return value (memory address)
 
-	fmt.Println(postmatch(input, matcher))
+	fmt.Println(postmatch(intopost(input), matcher))
 
 }
