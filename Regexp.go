@@ -23,17 +23,23 @@ func PrintS(s string) {
 }
 
 // Input take input from the user and assigns it to s which is needed by the nfa
-func Input(s string) string {
-	var Input string
-	PrintS(s)
-	fmt.Scan(&Input)
-	return Input
+func UserInput() string {
+	var input string
+	fmt.Println("Enter a string: ")
+	fmt.Scan(&input)
+	fmt.Println(input) // test has the input been taken in
+	/*Input := bufio.NewReader(os.Stdin)
+	fmt.Println("Please enter a string: ")
+	text, _ := Input.ReaderString('\n')
+	fmt.Println(text)
+	fmt.Scanln(&Input)
+	return text
 
+	return input
 }
 */
-
 //======================================================================================================================
-/*
+
 func intopost(infix string) string {
 	specials := map[rune]int{'*': 10, '.': 9, '|': 8}
 	// * 0 or more
@@ -71,7 +77,7 @@ func intopost(infix string) string {
 	}
 
 	return string(postfix)
-}*/
+}
 
 //=====================================================================================================================
 
@@ -131,9 +137,9 @@ func poregtonfa(postfix string) *nfa {
 		}
 	}
 	if len(nfastack) != 1 {
-		fmt.Println("Nani:", len(nfastack), nfastack)
+		fmt.Println("Nope:", len(nfastack), nfastack)
 	}
-
+	//fmt.Println(nfastack) // test to print memory address
 	return nfastack[0] // nfa return value
 }
 
@@ -185,8 +191,20 @@ func postmatch(po string, s string) bool {
 }
 
 func main() {
-	nfa := poregtonfa("ab.c*|") // test case representing a regular expression
-	fmt.Println(nfa)            // print out the return value (memory address)
+	var input string
+	var matcher string
+	fmt.Println("Enter a infix string: ")
+	fmt.Scan(&input)
+	fmt.Println("Enter a string to check it against: ")
+	fmt.Scan(&matcher)
+	//fmt.Println(input) // test has the input been taken in
 
-	fmt.Println(postmatch("ab.c*|", "cccc"))
+	//nfa := intopost(input)
+	nfa := poregtonfa(intopost(input)) // convert user input from infix to postfix
+	//nfa := intopost(UserInput())
+	//nfa := poregtonfa(input) // test case representing a regular expression
+	fmt.Println(nfa) // print out the return value (memory address)
+
+	fmt.Println(postmatch(input, matcher))
+
 }
